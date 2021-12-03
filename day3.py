@@ -23,30 +23,42 @@ def least_most_common(values):
     return [0, 1] if zero_count < one_count else [1, 0]
 
 
-# Function to split all inputs into separate lists
-def split_into_lists(values):
-    lists = [[0] * len(values)] * len(values[0])
+def least_most_lists(values):
+    lcl = [0] * len(values[0])
+    mcl = [0] * len(values[0])
 
-    for i in range(0, len(values)):
-        for j in range(0, len(values[i])):
-            lists[j][i] = values[i][j]
+    for i in range(0, len(values[0])):
+        [lc, mc] = calculate_columns(values, i)
+        lcl[i] = str(lc)
+        mcl[i] = str(mc)
 
-    return lists
-
-
-# Function to return list of least common and most common values
-def least_most_common_lists(lists):
-    least_common = [0] * len(lists)
-    most_common = [0] * len(lists)
-
-    print(lists)
-    for i in range(0, len(lists)):
-        [lc, mc] = least_most_common(lists[i])
-        least_common[i] = lc
-        most_common[i] = mc
-
-        i += 1
-    return [least_common, most_common]
+    return [lcl, mcl]
 
 
-print(str(least_most_common_lists(split_into_lists(get_formatted_inputs(file_name)))))
+def calculate_columns(values, column):
+    temp_list = [values[0][column]]
+
+    for i in range(1, len(values)):
+        temp_list.append(values[i][column])
+
+    return least_most_common(temp_list)
+
+
+def binary_list_to_decimal(b_list):
+    b_num = "".join(b_list)
+
+    return int(b_num, 2)
+
+
+def main(file_name):
+    formatted_inputs = get_formatted_inputs(file_name)
+    [lc_list, mc_list] = least_most_lists(formatted_inputs)
+    [epsilon_rate, gamma_rate] = [binary_list_to_decimal(
+        lc_list), binary_list_to_decimal(mc_list)]
+
+    print("Epsilon Rate: " + str(epsilon_rate))
+    print("Gamma Rate: " + str(gamma_rate))
+    print("Power Comsumption: " + str(epsilon_rate * gamma_rate))
+
+
+main(file_name)
