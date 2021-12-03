@@ -23,6 +23,7 @@ def least_most_common(values):
     return [0, 1] if zero_count < one_count else [1, 0]
 
 
+# Return lists of least and most values
 def least_most_lists(values):
     lcl = [0] * len(values[0])
     mcl = [0] * len(values[0])
@@ -35,6 +36,7 @@ def least_most_lists(values):
     return [lcl, mcl]
 
 
+# Get least and most values from each 'column'
 def calculate_columns(values, column):
     temp_list = [values[0][column]]
 
@@ -44,6 +46,7 @@ def calculate_columns(values, column):
     return least_most_common(temp_list)
 
 
+# Convert list of 'binary' to decimal
 def binary_list_to_decimal(b_list):
     b_num = "".join(b_list)
 
