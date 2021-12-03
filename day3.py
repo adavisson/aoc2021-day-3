@@ -46,6 +46,20 @@ def calculate_columns(values, column):
     return least_most_common(temp_list)
 
 
+def o2_generator_rating(values, index, common_values):
+    print(index)
+    if len(values) == 1:
+        return values
+
+    matches = []
+
+    for value in values:
+        if value[index] == common_values[index]:
+            matches.append(value)
+
+    return o2_generator_rating(matches, index + 1, common_values)
+
+
 # Convert list of 'binary' to decimal
 def binary_list_to_decimal(b_list):
     b_num = "".join(b_list)
@@ -58,10 +72,22 @@ def main(file_name):
     [lc_list, mc_list] = least_most_lists(formatted_inputs)
     [epsilon_rate, gamma_rate] = [binary_list_to_decimal(
         lc_list), binary_list_to_decimal(mc_list)]
+    o2_generator_rating_value = o2_generator_rating(
+        formatted_inputs, 0, mc_list)
+    co2_scrubber_rating_value = o2_generator_rating(
+        formatted_inputs, 0, lc_list)
+    life_support_rating = int(
+        o2_generator_rating_value[0], 2) * int(co2_scrubber_rating_value[0], 2)
 
     print("Epsilon Rate: " + str(epsilon_rate))
     print("Gamma Rate: " + str(gamma_rate))
     print("Power Comsumption: " + str(epsilon_rate * gamma_rate))
+
+    print("O2 Generator Rating: " +
+          str(o2_generator_rating_value))
+    print("CO2 Scrubber Rating: " +
+          str(co2_scrubber_rating_value))
+    print("Life Support Rating: " + str(life_support_rating))
 
 
 main(file_name)
