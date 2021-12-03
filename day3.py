@@ -15,9 +15,9 @@ def least_most_common(values):
     one_count = 0
 
     for value in values:
-        if int(value) == 0:
+        if value == "0":
             zero_count += 1
-        elif int(value) == 1:
+        elif value == "1":
             one_count += 1
 
     return [0, 1] if zero_count < one_count else [1, 0]
@@ -25,10 +25,28 @@ def least_most_common(values):
 
 # Function to split all inputs into separate lists
 def split_into_lists(values):
-    lists = [[int(value)] for value in values[0]]
-    print(lists)
+    lists = [[0] * len(values)] * len(values[0])
+
+    for i in range(0, len(values)):
+        for j in range(0, len(values[i])):
+            lists[j][i] = values[i][j]
 
     return lists
 
 
-print(str(split_into_lists(get_formatted_inputs(file_name)))[0])
+# Function to return list of least common and most common values
+def least_most_common_lists(lists):
+    least_common = [0] * len(lists)
+    most_common = [0] * len(lists)
+
+    print(lists)
+    for i in range(0, len(lists)):
+        [lc, mc] = least_most_common(lists[i])
+        least_common[i] = lc
+        most_common[i] = mc
+
+        i += 1
+    return [least_common, most_common]
+
+
+print(str(least_most_common_lists(split_into_lists(get_formatted_inputs(file_name)))))
