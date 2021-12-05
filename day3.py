@@ -46,18 +46,59 @@ def calculate_columns(values, column):
     return least_most_common(temp_list)
 
 
-def o2_generator_rating(values, index, common_values):
-    print(index)
+def o2_generator_rating(values, index):
     if len(values) == 1:
         return values
 
-    matches = []
+    index_list = []
 
     for value in values:
-        if value[index] == common_values[index]:
-            matches.append(value)
+        index_list.append(value[index])
 
-    return o2_generator_rating(matches, index + 1, common_values)
+    [lc, mc] = least_most_common(index_list)
+
+    if lc == mc:
+        mc = 1
+
+    matches = []
+
+    # for value in values:
+    #     if value[index] == mc:
+    #         matches.append(value)
+    #     if len(matches) == 0 &
+
+    for i in range(0, len(values)):
+        if int(values[i][index]) == int(mc):
+            matches.append(value)
+        elif len(matches) == 0 and i == len(values) - 1:
+            return values[i]
+
+    return o2_generator_rating(matches, index + 1)
+
+
+def co2_scrubber_rating(values, index):
+    if len(values) == 1:
+        return values
+
+    index_list = []
+
+    for value in values:
+        index_list.append(value[index])
+
+    [lc, mc] = least_most_common(index_list)
+
+    if lc == mc:
+        lc = 0
+
+    matches = []
+
+    for i in range(0, len(values)):
+        if int(values[i][index]) == int(lc):
+            matches.append(value)
+        elif len(matches) == 0 and i == len(values) - 1:
+            return values[i]
+
+    return o2_generator_rating(matches, index + 1)
 
 
 # Convert list of 'binary' to decimal
@@ -73,9 +114,9 @@ def main(file_name):
     [epsilon_rate, gamma_rate] = [binary_list_to_decimal(
         lc_list), binary_list_to_decimal(mc_list)]
     o2_generator_rating_value = o2_generator_rating(
-        formatted_inputs, 0, mc_list)
-    co2_scrubber_rating_value = o2_generator_rating(
-        formatted_inputs, 0, lc_list)
+        formatted_inputs, 0)
+    co2_scrubber_rating_value = co2_scrubber_rating(
+        formatted_inputs, 0)
     life_support_rating = int(
         o2_generator_rating_value[0], 2) * int(co2_scrubber_rating_value[0], 2)
 
